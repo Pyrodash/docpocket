@@ -24,28 +24,28 @@ export default function BottomTabNavigator() {
                 name="Home"
                 component={HomeNavigator}
                 options={{
-                    tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+                    tabBarIcon: ({ color }) => <TabBarIcon name="ios-home" color={color} />,
                 }}
             />
             <BottomTab.Screen
                 name="Doctors"
                 component={DoctorsNavigator}
                 options={{
-                    tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+                    tabBarIcon: ({ color }) => <TabBarIcon name="ios-medical" color={color} />,
                 }}
             />
             <BottomTab.Screen
                 name="Appointments"
                 component={AppointmentsNavigator}
                 options={{
-                    tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+                    tabBarIcon: ({ color }) => <TabBarIcon name="ios-calendar" color={color} />,
                 }}
             />
             <BottomTab.Screen
                 name="Profile"
                 component={ProfileNavigator}
                 options={{
-                    tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+                    tabBarIcon: ({ color }) => <TabBarIcon name="ios-person" color={color} />,
                 }}
             />
         </BottomTab.Navigator>
