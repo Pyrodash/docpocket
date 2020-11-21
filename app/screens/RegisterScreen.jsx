@@ -24,13 +24,13 @@ export default class RegisterScreen extends React.Component {
                 <View style={styles.form}>
                     <Text style={styles.title}>Sign Up</Text> 
                     <Field name="Email" />
-                    <Field name="Password" />
+                    <Field name="Password" isPassword={true} />
                     <Button title="Sign Up" onPress={()=>{}} />
                 </View>
                 <View style={styles.registerMsg}>
-                    <Text style={styles.registerText}>Don't have an account?</Text>
-                    <Link to="Register">
-                        <Text style={styles.link}>Create an account</Text>
+                    <Text style={styles.registerText}>Already have an account?</Text>
+                    <Link to="/login">
+                        <Text style={styles.link}>Sign In</Text>
                     </Link>
                 </View>
             </View>

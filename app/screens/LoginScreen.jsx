@@ -23,7 +23,7 @@ export default class LoginScreen extends React.Component {
                 <View style={styles.form}>
                     <Text style={styles.title}>Login</Text> 
                     <Field name="Email" />
-                    <Field name="Password" />
+                    <Field name="Password" isPassword={true} />
                     <Button title="Log In" onPress={()=>{}} />
                 </View>
                 <View style={styles.registerMsg}>
