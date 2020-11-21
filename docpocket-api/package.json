@@ -1,0 +1,20 @@
+{
+  "name": "docpocket-api",
+  "version": "1.0.0",
+  "description": "api for mobile docpocket app",
+  "main": "server.js",
+  "scripts": {
+    "start": "./node_modules/nodemon/bin/nodemon.js ./server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "boom": "^7.2.2",
+    "fastify": "^1.13.0",
+    "fastify-swagger": "^0.15.3",
+    "mongoose": "^5.3.14",
+    "nodemon": "^1.18.7"
+  },
+  "devDependencies": {}
+}
