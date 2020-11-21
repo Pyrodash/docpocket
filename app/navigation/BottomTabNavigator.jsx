@@ -9,9 +9,8 @@ import HomeScreen from '../screens/HomeScreen';
 import DoctorsScreen from '../screens/DoctorsScreen';
 import AppointmentsScreen from '../screens/AppointmentsScreen'
 import ProfileScreen from '../screens/ProfileScreen'
-import { BottomTabParamList, HomeParamList, DoctorsParamList, AppointmentsParamList, ProfileParamList } from '../types';
 
-const BottomTab = createBottomTabNavigator<BottomTabParamList>();
+const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
     const colorScheme = useColorScheme();
@@ -54,13 +53,13 @@ export default function BottomTabNavigator() {
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
-function TabBarIcon(props: { name: string; color: string }) {
+function TabBarIcon(props) {
     return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const HomeStack = createStackNavigator<HomeParamList>();
+const HomeStack = createStackNavigator();
 
 function HomeNavigator() {
     return (
@@ -74,7 +73,7 @@ function HomeNavigator() {
     );
 }
 
-const DoctorsStack = createStackNavigator<DoctorsParamList>();
+const DoctorsStack = createStackNavigator();
 
 function DoctorsNavigator() {
     return (
@@ -88,7 +87,7 @@ function DoctorsNavigator() {
     );
 }
 
-const AppointmentsStack = createStackNavigator<AppointmentsParamList>();
+const AppointmentsStack = createStackNavigator();
 
 function AppointmentsNavigator() {
     return (
@@ -102,7 +101,7 @@ function AppointmentsNavigator() {
     );
 }
 
-const ProfileStack = createStackNavigator<ProfileParamList>();
+const ProfileStack = createStackNavigator();
 
 function ProfileNavigator() {
     return (

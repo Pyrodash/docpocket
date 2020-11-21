@@ -1,16 +1,14 @@
-import { action, computed, observable, runInAction } from 'mobx'
-import { task, Task } from 'mobx-task'
+import { makeAutoObservable, runInAction } from 'mobx'
 import * as SecureStore from 'expo-secure-store'
 
-interface IAuthStore {
-    token?: string
-}
+export class AuthStore {
+    token = ''
+    isLoading = false
 
-export class AuthStore implements IAuthStore {
-    @observable token = ''
-    @observable isLoading = false
+    constructor() {
+        makeAutoObservable(this)
+    }
 
-    @computed
     get isLoggedIn() {
         return this.token && this.token.length > 0
     }

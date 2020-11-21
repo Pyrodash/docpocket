@@ -2,13 +2,8 @@ import React from 'react'
 import { useColorScheme, ColorSchemeName } from 'react-native';
 import useCachedResources from '../hooks/useCachedResources';
 
-export interface IHooksHOCProps {
-    isLoadingComplete: boolean
-    colorScheme: ColorSchemeName
-}
-
-export function withHooks(Component: any) {
-    return (props: any) => {
+export function withHooks(Component) {
+    return (props) => {
         const isLoadingComplete = useCachedResources()
         const colorScheme = useColorScheme()
 
