@@ -9,7 +9,6 @@ export default function DoctorsScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Doctors</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/DoctorsScreen.js" />
     </View>
   );
 }

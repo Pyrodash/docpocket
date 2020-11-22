@@ -10,7 +10,8 @@ import SplashScreen from './screens/SplashScreen'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { withHooks, IHooksHOCProps } from './hocs/withHooks'
 import * as mobx from 'mobx'
-import FlashMessage from 'react-native-flash-message'
+import FlashMessage, { showMessage } from 'react-native-flash-message'
+import { View } from './components/Themed'
 
 const Stack = createStackNavigator()
 
@@ -35,17 +36,18 @@ class App extends React.Component {
         const { loading } = this.store
 
         return (
-            <Provider store={this.store}>
-                <SafeAreaProvider>
+            <SafeAreaProvider>
+                <Provider store={this.store}>
                     <Spinner
                         visible={loading.visible}
                         textContent={loading.text}
                         textStyle={mobx.toJS(loading.style)}
                     />
-                    <FlashMessage position='top' />
                     <Navigation colorScheme={this.props.colorScheme} />
-                </SafeAreaProvider>
-            </Provider>
+                </Provider>
+                <StatusBar />
+                <FlashMessage position="top" floating={true} />
+            </SafeAreaProvider>
         )
     }
 }

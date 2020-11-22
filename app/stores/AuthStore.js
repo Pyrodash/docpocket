@@ -1,9 +1,8 @@
-import { makeAutoObservable, runInAction } from 'mobx'
+import { makeAutoObservable, observable, runInAction } from 'mobx'
 import * as SecureStore from 'expo-secure-store'
-import API from '../Api'
 
 export class AuthStore {
-    token = ''
+    token = observable.box()
     isLoading = false
 
     constructor() {
@@ -11,7 +10,9 @@ export class AuthStore {
     }
 
     get isLoggedIn() {
-        return this.token && this.token.length > 0
+        const token = this.token.get()
+        
+        return token && token.length > 0
     }
 
     async getToken() {
@@ -21,31 +22,25 @@ export class AuthStore {
             const token = await SecureStore.getItemAsync('token')
 
             runInAction(() => {
-                this.token = token || ''
+                //this.token.set(token || '')
+                this.token.set('')
                 this.isLoading = false
             })
         } catch(err) {
             console.error(err)
 
             runInAction(() => {
-                this.token = ''
+                this.token.set('')
                 this.isLoading = false
             })
         }
     }
 
-    async login(email, pass) {
-        const res = await API.post('/auth/login', { email, pass })
-
-        let status = false
-
-        if (res.status === 200) {
-            status = true
-            runInAction(() => {
-                this.token = res.data.token
-            })
-        }
-
-        return { status, code: res.status }
+    async setToken(token) {
+        await SecureStore.setItemAsync('token', token)
+        
+        runInAction(() => {
+            this.token.set(token)
+        })
     }
 }

@@ -29,6 +29,8 @@ const Stack = createStackNavigator();
 function RootNavigator({ store }) {
     const { authStore } = store
 
+    console.log('Test', authStore.isLoggedIn)
+
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             {authStore.isLoggedIn ? (

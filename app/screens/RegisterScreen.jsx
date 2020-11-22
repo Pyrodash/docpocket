@@ -1,66 +1,94 @@
-import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
-import { StyleSheet, TextInput } from 'react-native'
-import { Button, Field } from '../components/Form'
-import { AppTheme } from '../Theme'
-import { Link } from '@react-navigation/native'
+import { Field } from '../components/Form'
+import { inject, observer } from 'mobx-react'
+import API from '../Api'
+import { sleep } from '../utils'
+import { AuthScreen } from './AuthScreen'
 
-export default class RegisterScreen extends React.Component {
-    render() {
+class RegisterScreen extends AuthScreen {
+    constructor(props) {
+        super(props)
+
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.config = {
+            title: 'Register',
+            submit: 'Sign Up',
+            messageTxt: "Already have an account?",
+            messageLinkTxt: "Sign in",
+            messageLink: '/login'
+        }
+    }
+
+    renderFormContent() {
         return (
-            <View style={styles.container}>
-                <View style={styles.form}>
-                    <Text style={styles.title}>Sign Up</Text> 
-                    <Field name="Email" />
-                    <Field name="Password" isPassword={true} />
-                    <Button title="Sign Up" onPress={()=>{}} />
-                </View>
-                <View style={styles.registerMsg}>
-                    <Text style={styles.registerText}>Already have an account?</Text>
-                    <Link to="/login">
-                        <Text style={styles.link}>Sign In</Text>
-                    </Link>
-                </View>
-            </View>
+            <>
+                <Field
+                    name="firstName"
+                    label="First Name"
+                />
+                <Field
+                    name="lastName"
+                    label="Last Name"
+                />
+                <Field
+                    name="email"
+                    label="Email"
+                    autoCapitalize="none"
+                />
+                <Field
+                    name="password"
+                    label="Password"
+                    isPassword={true}
+                />
+                <Field
+                    name="gender"
+                    label="Gender"
+                />
+                <Field
+                    name="birthday"
+                    label="Birthday"
+                />
+            </>
         )
+    }
+
+    async handleSubmit(data) {
+        const { 
+            firstName,
+            lastName,
+            email,
+            password,
+            gender,
+            birthday
+        } = data
+        const { store } = this.props
+        
+        store.loading.show('Creating account')
+        
+        if (this.state.error) {
+            this.hideError()
+            
+            await sleep(225)
+        }
+
+        try {
+            const { status, code } = await API.login(email, password)
+            
+            store.loading.hide()
+            
+            if (!status) {
+                switch (code) {
+                    case 401:
+                        this.showError('Invalid username or password.')
+                        break
+                }
+            }
+        } catch(err) {
+            store.loading.hide()
+
+            this.showError('An error occured. Please try again later.')
+        }
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        width: '100%',
-        height: '100%',
-        flexDirection: 'column',
-        padding: 25,
-    },
-    form: {
-        marginTop: 'auto',
-        marginBottom: 'auto'
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        marginBottom: 15
-    },
-    icon: {},
-    registerMsg: {
-        color: 'grey',
-        alignSelf: 'center',
-        fontSize: 15,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    registerText: {
-        marginRight: 5,
-        fontSize: 15
-    },
-    link: {
-        color: AppTheme.colors.primary,
-        fontWeight: '700',
-        fontSize: 16,
-    },
-})
+export default inject('store')(observer(RegisterScreen))

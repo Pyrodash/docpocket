@@ -10,6 +10,10 @@ const User = require("../models/User")
 module.exports = function(fastify, opts, next) {
     fastify.post('/login', async (req, res) => {
         try {
+            if (!req.body) {
+                req.body = {}
+            }
+
             const { email, password } = req.body
 
             if(!email || !password) {

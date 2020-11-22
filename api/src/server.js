@@ -3,6 +3,7 @@ require('dotenv').config()
 const fastify = require('fastify')({})
 
 const mongoose = require('mongoose')
+const User = require('./models/User')
 
 mongoose.connect(process.env.DB_ADDRESS, {
     useNewUrlParser: true,
@@ -37,7 +38,7 @@ module.exports = function (fastify, opts, next) {
 
 
  // Run the server!
-fastify.listen(process.env.API_PORT, function (err, address) {
+fastify.listen(process.env.API_PORT, '0.0.0.0', function (err, address) {
     if (err) {
         console.error(err)
         process.exit(1)
