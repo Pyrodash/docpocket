@@ -1,21 +1,9 @@
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { StyleSheet, TextInput } from 'react-native'
-import { Button } from '../components/Button'
+import { Button, Field } from '../components/Form'
 import { AppTheme } from '../Theme'
-import { View, Text } from '../components/Themed'
 import { Link } from '@react-navigation/native'
-
-class Field extends React.Component {
-    render() {
-        return (
-            <View style={styles.field}>
-                <Text style={styles.label}>{this.props.name}</Text>
-                <TextInput style={styles.input} secureTextEntry={this.props.isPassword}></TextInput>
-            </View>
-        )
-    }
-}
 
 export default class RegisterScreen extends React.Component {
     render() {
@@ -57,20 +45,6 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     icon: {},
-    field: {
-        marginBottom: 20
-    },
-    label: {
-        fontSize: 20,
-        marginBottom: 5,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: 'lightgrey',
-        padding: 8,
-        fontSize: 20,
-        borderRadius: 4
-    },
     registerMsg: {
         color: 'grey',
         alignSelf: 'center',

@@ -4,18 +4,18 @@ import React from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import Navigation from './navigation'
-import { RootStore } from './stores'
+import store from './stores'
 import { createStackNavigator } from '@react-navigation/stack'
 import SplashScreen from './screens/SplashScreen'
-import LoginScreen from './screens/LoginScreen'
-import RegisterScreen from './screens/RegisterScreen'
-import MainScreen from './screens/MainScreen'
+import Spinner from 'react-native-loading-spinner-overlay'
 import { withHooks, IHooksHOCProps } from './hocs/withHooks'
+import * as mobx from 'mobx'
+import FlashMessage from 'react-native-flash-message'
 
 const Stack = createStackNavigator()
 
 class App extends React.Component {
-    store = new RootStore()
+    store = store
 
     constructor(props) {
         super(props)
@@ -32,9 +32,17 @@ class App extends React.Component {
             return <SplashScreen />
         }
 
+        const { loading } = this.store
+
         return (
             <Provider store={this.store}>
                 <SafeAreaProvider>
+                    <Spinner
+                        visible={loading.visible}
+                        textContent={loading.text}
+                        textStyle={mobx.toJS(loading.style)}
+                    />
+                    <FlashMessage position='top' />
                     <Navigation colorScheme={this.props.colorScheme} />
                 </SafeAreaProvider>
             </Provider>

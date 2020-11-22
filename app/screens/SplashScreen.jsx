@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { View, Text } from '../components/Themed'
 import { Logo } from '../components/Logo'
-import { Button } from '../components/Button'
+import { Button } from '../components/Form'
 
 export default class SplashScreen extends React.Component {
     render() {

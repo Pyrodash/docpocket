@@ -1,30 +1,45 @@
 import React from 'react'
-import { StyleSheet, TextInput } from 'react-native'
-import { Button } from '../components/Button'
+import { StyleSheet } from 'react-native'
+import { Button, Field } from '../components/Form'
 import { AppTheme } from '../Theme'
 import { View, Text } from '../components/Themed'
 import { Link } from '@react-navigation/native'
+import { inject, observer } from 'mobx-react'
+import { showMessage, hideMessage } from 'react-native-flash-message'
 
-class Field extends React.Component {
-    render() {
-        return (
-            <View style={styles.field}>
-                <Text style={styles.label}>{this.props.name}</Text>
-                <TextInput style={styles.input} secureTextEntry={this.props.isPassword}></TextInput>
-            </View>
-        )
+class LoginScreen extends React.Component {
+    constructor(props) {
+        super(props)
+        
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+
+        this.state = {
+            email: '',
+            password: '',
+            busy: false,
+        }
     }
-}
 
-export default class LoginScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.form}>
                     <Text style={styles.title}>Login</Text> 
-                    <Field name="Email" />
-                    <Field name="Password" isPassword={true} />
-                    <Button title="Log In" onPress={()=>{}} />
+                    <Field
+                        name="email"
+                        label="Email"
+                        onChange={this.handleChange}
+                        value={this.state.email}
+                    />
+                    <Field
+                        name="password"
+                        label="Password"
+                        isPassword={true}
+                        onChange={this.handleChange}
+                        value={this.state.password}
+                    />
+                    <Button title="Log In" onPress={this.handleSubmit} />
                 </View>
                 <View style={styles.registerMsg}>
                     <Text style={styles.registerText}>Don't have an account?</Text>
@@ -35,7 +50,56 @@ export default class LoginScreen extends React.Component {
             </View>
         )
     }
+
+    handleChange(evt = {}) {
+        const name = evt.target.name
+        const value = evt.target.value
+
+        this.setState({ [name]: value })
+    }
+
+    handleSubmit() {
+        if (this.state.busy) {
+            return
+        }
+
+        if (!this.state.email || !this.state.password) {
+            return
+        }
+
+        hideMessage()
+
+        const { email, password } = this.state
+        const { store } = this.props
+
+        this.state.busy = true
+
+        store.loading.show('Logging In')
+        store.authStore.login(email, password).then(({ status, code }) => {
+            if (!status) {
+                switch (code) {
+                    case 401:
+                        this.showError('Invalid username or password.')
+                        break
+                }
+            }
+
+            store.loading.hide()
+        }).catch((err) => {
+            this.showError('An error occured. Please try again later.')
+        })
+    }
+
+    showError(msg) {
+        showMessage({
+            message: 'Error',
+            description: msg,
+            type: 'danger',
+        })
+    }
 }
+
+export default inject('store')(observer(LoginScreen))
 
 const styles = StyleSheet.create({
     container: {
@@ -56,20 +120,6 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     icon: {},
-    field: {
-        marginBottom: 20
-    },
-    label: {
-        fontSize: 20,
-        marginBottom: 5,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: 'lightgrey',
-        padding: 8,
-        fontSize: 20,
-        borderRadius: 4
-    },
     registerMsg: {
         color: 'grey',
         alignSelf: 'center',
