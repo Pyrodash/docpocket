@@ -1,24 +1,25 @@
-const fastify = require('fastify')({
-    logger: true
-})
-  
+require('dotenv').config()
+
+const fastify = require('fastify')({})
+
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/doctdb')
+mongoose.connect(process.env.DB_ADDRESS, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
     .then(() => console.log('MongoDB connected…'))
     .catch(err => console.log(err))
 
-fastify.register(require('fastify-jwt'), {
-    secret: "test@#$%" // use .env
-})
+fastify.register(require('./config/jwt'))
 
+fastify.register(require('./middleware/authMiddleware'));
+fastify.register(require('./router/authRouter.js'), { prefix: '/auth' })
+
+/*
 const path = require('path')
 const AutoLoad = require('fastify-autoload')
 
-fastify.register(require('./database'))
-fastify.register(require('./middleware/auth_middleware'));
-fastify.register(require('./router/authRouter.js'))
-/*
 module.exports = function (fastify, opts, next) {
 
   // loads all our plugins/routes defined in services
@@ -36,10 +37,11 @@ module.exports = function (fastify, opts, next) {
 
 
  // Run the server!
-fastify.listen(8000, function (err, address) {
+fastify.listen(process.env.API_PORT, function (err, address) {
     if (err) {
-        fastify.log.error(err)
+        console.error(err)
         process.exit(1)
     }
-    fastify.log.info(`Docpocket API listening on ${address}`)
-}); 
+
+    console.log(`Docpocket API listening at ${address}`)
+})

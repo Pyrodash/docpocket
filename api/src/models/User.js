@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const patientSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     age: String,
@@ -9,9 +9,7 @@ const patientSchema = new mongoose.Schema({
     height: Number,
     weight: Number,
     password: String,
-    doctorsIds: [{
-        type: Number
-    }]
+    isDoctor: Boolean,
 })
 
-module.exports = mongoose.model('Patient', patientSchema)
+module.exports = mongoose.model('User', userSchema)

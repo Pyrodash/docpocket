@@ -4,30 +4,32 @@
 
 */
 
-async function AuthRouter(fastify){
-    fastify.post('/api/generateAccessToken', async (req, res) => {
+const argon2 = require('argon2')
+const User = require("../models/User")
+
+module.exports = function(fastify, opts, next) {
+    fastify.post('/login', async (req, res) => {
         try {
-            const {email, userid, password} = req.body;
-            if(!email || !userid || !password) {
-                res.status(400).send({error: true, msg: "Missing account details."})
+            const { email, password } = req.body
+
+            if(!email || !password) {
+                return res.status(400).send()
             }
 
-            // check if account information is correct w/ mongodb
-            /*
-            let userData = await db.query("SELECT email from user where user_id=?", [userid]);
-            if(userData && userData.length > 0){
+            const user = await User.findOne({ email }).exec()
 
-            } idk :/  */
+            if (!user || !(await argon2.verify(user.password, password))) {
+                return res.status(401).send()
+            }
 
-            const token = fastify.jwt.sign({email, userid, password}, {
-                expiresIn: '24h' // expiry not required, can be omitted.
-            })
-            res.status(200).send({token, email})
+            const token = fastify.jwt.sign({ id: user._id })
+
+            res.status(200).send({ token, id: user._id })
         } catch (error) {
-            throw error;
+            console.error(error)
+            res.status(500).send()
         }
     })
+
+    next()
 }
-
-
-module.exporters = AuthRouter;
