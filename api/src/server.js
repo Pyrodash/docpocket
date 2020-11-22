@@ -1,15 +1,15 @@
 const fastify = require('fastify')({
     logger: true
-  })
+})
   
 const mongoose = require('mongoose')
 
 mongoose.connect('mongodb://localhost/doctdb')
-  .then(() => console.log('MongoDB connected…'))
-  .catch(err => console.log(err))
+    .then(() => console.log('MongoDB connected…'))
+    .catch(err => console.log(err))
 
 fastify.register(require('fastify-jwt'), {
-  secret: "test@#$%" // use .env
+    secret: "test@#$%" // use .env
 })
 
 const path = require('path')
@@ -36,10 +36,10 @@ module.exports = function (fastify, opts, next) {
 
 
  // Run the server!
- fastify.listen(8000, function (err, address) {
-  if (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
-  fastify.log.info(`Docpocket API listening on ${address}`)
+fastify.listen(8000, function (err, address) {
+    if (err) {
+        fastify.log.error(err)
+        process.exit(1)
+    }
+    fastify.log.info(`Docpocket API listening on ${address}`)
 }); 

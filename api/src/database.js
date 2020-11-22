@@ -1,9 +1,9 @@
 const fastifyPlugin = require('fastify-plugin')
 
 async function dbConnector (fastify, options) {
-  fastify.register(require('fastify-mongodb'), {
-    url: 'mongodb://localhost/docpocket'
-  })
+    fastify.register(require('fastify-mongodb'), {
+        url: 'mongodb://localhost/docpocket'
+    })
 }
 
 // Wrapping a plugin function with fastify-plugin exposes the decorators    
